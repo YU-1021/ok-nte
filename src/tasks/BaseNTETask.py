@@ -748,10 +748,18 @@ class BaseNTETask(BaseTask):
 
     def click_nearest_map_teleport(self, threshold=0.7, time_out=5):
         self.ensure_main()
-        self.send_key("m", after_sleep=1)
-        to_find = [Labels.map_big_teleport]
-        template_box = self.get_box_by_name(Labels.map_big_teleport)
-        step = max(template_box.width, template_box.height, self.width_of_screen(0.02), 1)
+        self.wait_until(
+            lambda: self.find_one(Labels.map_city_tycoon_activities),
+            time_out=10,
+            pre_action=lambda: self.send_key("m", interval=2),
+            raise_if_not_found=True,
+        )
+        to_find = [Labels.map_big_teleport, Labels.map_small_teleport]
+        template_boxes = [self.get_box_by_name(label) for label in to_find]
+        max_template_size = max(
+            max(template_box.width, template_box.height) for template_box in template_boxes
+        )
+        step = max(max_template_size, self.width_of_screen(0.02), 1)
         center_x = self.width_of_screen(0.5)
         center_y = self.height_of_screen(0.5)
         max_radius = max(self.width, self.height)

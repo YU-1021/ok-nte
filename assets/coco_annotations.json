@@ -897,6 +897,32 @@
             ],
             "area": 3192,
             "iscrowd": 0
+        },
+        {
+            "id": 57,
+            "image_id": 28,
+            "category_id": 57,
+            "bbox": [
+                925,
+                770,
+                63,
+                63
+            ],
+            "area": 3969,
+            "iscrowd": 0
+        },
+        {
+            "id": 58,
+            "image_id": 28,
+            "category_id": 58,
+            "bbox": [
+                106,
+                1234,
+                106,
+                95
+            ],
+            "area": 10070,
+            "iscrowd": 0
         }
     ],
     "categories": [
@@ -1178,6 +1204,16 @@
         {
             "id": 56,
             "name": "heist_interac_lock_pick",
+            "supercategory": ""
+        },
+        {
+            "id": 57,
+            "name": "map_small_teleport",
+            "supercategory": ""
+        },
+        {
+            "id": 58,
+            "name": "map_city_tycoon_activities",
             "supercategory": ""
         }
     ]
