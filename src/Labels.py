@@ -46,6 +46,7 @@ class Labels(str, Enum):
     login_setting = 'login_setting'
     lv = 'lv'
     mail_panel = 'mail_panel'
+    map_big_teleport = 'map_big_teleport'
     map_location_card = 'map_location_card'
     message = 'message'
     message_dialog = 'message_dialog'

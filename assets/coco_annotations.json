@@ -161,6 +161,12 @@
             "file_name": "images/2.png",
             "width": 2560,
             "height": 1440
+        },
+        {
+            "id": 28,
+            "file_name": "images/1.png",
+            "width": 2560,
+            "height": 1440
         }
     ],
     "annotations": [
@@ -878,6 +884,19 @@
             ],
             "area": 1332,
             "iscrowd": 0
+        },
+        {
+            "id": 56,
+            "image_id": 28,
+            "category_id": 55,
+            "bbox": [
+                1247,
+                645,
+                56,
+                57
+            ],
+            "area": 3192,
+            "iscrowd": 0
         }
     ],
     "categories": [
@@ -1149,6 +1168,11 @@
         {
             "id": 54,
             "name": "heist_timer",
+            "supercategory": ""
+        },
+        {
+            "id": 55,
+            "name": "map_big_teleport",
             "supercategory": ""
         },
         {
