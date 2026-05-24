@@ -374,7 +374,7 @@ class CombatCheck(BaseNTETask):
                 if self._combat_settle.time is None:
                     self._combat_settle.time = time.time() + 0.4
                 if self._combat_settle.time > time.time():
-                    if self.middle_click(interval=0.35):
+                    if self.click(key="middle", action_name="retarget", interval=0.35):
 
                         def delay_detect():
                             time.sleep(0.25)
