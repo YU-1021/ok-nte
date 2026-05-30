@@ -85,6 +85,7 @@ jobs:
           Write-Host "Release version: $isRelease"
 
       - name: Build with PyAppify Action
+        if: steps.release-version.outputs.is_release == 'true'
         id: build-app
         uses: ok-oldking/pyappify-action@master #使用pyappify打包exe
         env:
