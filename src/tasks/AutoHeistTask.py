@@ -58,20 +58,22 @@ INST = "<br>".join(
         _inst_gap(),
         _inst_line("路径1推荐设置", bold=True),
         _inst_line("FPS: 60~120", indent=1),
-        _inst_line("战斗角色: 主角 / 哈尼娅", indent=1),
+        _inst_line("战斗角色: 主角 / 哈尼娅 / 浔", indent=1),
         _inst_line("跑图角色: 薄荷", indent=1),
         _inst_line("避战角色(可选): 翳 / 浔", indent=1),
         _inst_gap(),
         _inst_line("路径2推荐设置", bold=True),
-        _inst_line("画质：性能 | 分辨率：1080P | FPS：60", indent=1),
+        _inst_line("画质：性能 | 分辨率: 1080P | FPS: 60", indent=1),
         _inst_line("跑图角色: 薄荷", indent=1),
-        _inst_line("早雾避战：" , indent=1),
-        _inst_line("  战斗角色: 早雾（必须，战斗角色中最前，其他战斗角色随意，可塞安魂曲） / 主角 / 哈尼娅", indent=1),
-        _inst_line("  避战角色: 翳（必须，设置为shift避战）", indent=1),
-        _inst_line("浔避战：" , indent=1),
-        _inst_line("  战斗角色: 随意（战斗角色随意，可塞安魂曲） / 主角 / 哈尼娅", indent=1),
-        _inst_line("  避战角色: 浔（必须，设置为长按攻击避战）", indent=1),
-
+        _inst_line("早雾避战：", indent=1),
+        _inst_line(
+            "战斗角色: 早雾（必须，战斗角色中最前，其他战斗角色随意，可塞安魂曲） / 主角 / 哈尼娅",
+            indent=2,
+        ),
+        _inst_line("避战角色: 翳", indent=2),
+        _inst_line("浔避战：", indent=1),
+        _inst_line("战斗角色: 随意 (战斗角色随意，可塞安魂曲) / 主角 / 哈尼娅", indent=2),
+        _inst_line("避战角色: 浔", indent=2),
     ]
 )
 
