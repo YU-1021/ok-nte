@@ -40,6 +40,8 @@ class FishingTask(NTEOneTimeTask, BaseNTETask):
         self.name = "自动钓鱼"
         self.description = "自动完成一轮或多轮钓鱼"
         self.icon = FluentIcon.SYNC
+        self.group_name = "都市闲趣"
+        self.group_icon = FluentIcon.GAME
         self.default_config.update(
             {
                 self.CONF_ROUNDS: 1,

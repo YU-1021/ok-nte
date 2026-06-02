@@ -3,7 +3,6 @@ import time
 from ok import TaskDisabledException, og
 from qfluentwidgets import FluentIcon
 
-from src.Labels import Labels
 from src.tasks.NTEOneTimeTask import NTEOneTimeTask
 from src.tasks.RecordTask import RecordTask
 
@@ -41,7 +40,9 @@ class OwnerSelectionTask(NTEOneTimeTask, RecordTask):
             "2. 站在咖啡店可进行 F 交互的位置。\n"
             "3. 首次启动需录制目标, 点击[开始]后请跟随指示操作。"
         )
-        self.icon = FluentIcon.SYNC
+        self.icon = FluentIcon.CAFE
+        self.group_name = "都市闲趣"
+        self.group_icon = FluentIcon.GAME
         self.default_config.update({self.CONF_ROUNDS: 99999, self.CONF_ROB: False})
         self.tr(RECORD_INS)
 
