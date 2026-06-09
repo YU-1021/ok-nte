@@ -265,7 +265,11 @@ class LauncherTask(BaseNTETask):
         self.log_info(f"Found launcher Start Game button: {start_button}")
         self.click(start_button, after_sleep=2)
         if not self._is_launcher_minimized():
+            self.click(0.6062, 0.5938, after_sleep=0.2)  # close popup
             self.click(0.5269, 0.6122, after_sleep=2)  # close popup
+        if not self._is_launcher_minimized():
+            self.click(0.5269, 0.6122, after_sleep=0.2)  # close popup
+            self.click(0.6062, 0.5938, after_sleep=2)  # close popup
 
     def _launcher_button_ready(self):
         box = self.box_of_screen(0.8137, 0.8678, 0.8387, 0.9022, name="launcher_button")
