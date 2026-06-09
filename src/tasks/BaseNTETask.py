@@ -241,8 +241,8 @@ class BaseNTETask(CharUIMixin, BaseTask):
     def get_base_char_element_box(self):
         return super().get_base_char_element_box()
 
-    def is_in_team(self) -> Box | None:
-        frame = self.frame
+    def is_in_team(self, frame=None) -> Box | None:
+        frame = self.frame if frame is None else frame
         if frame is None:
             self.log_warning("Received an empty or None frame. Skipping...")
             time.sleep(1)
@@ -283,7 +283,7 @@ class BaseNTETask(CharUIMixin, BaseTask):
         self._logged_in = True
         return True, current, exist_count
 
-    def get_box_by_char_spacing(self, box: Box, index: int):
+    def get_box_by_char_spacing(self, box: Box, index: int) -> Box:
         return super().get_box_by_char_spacing(box, index)
 
     def is_char_at_index(self, index, threshold=0.5, frame=None):
