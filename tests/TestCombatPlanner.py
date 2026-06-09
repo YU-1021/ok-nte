@@ -27,7 +27,7 @@ class FakeTask:
         self.reaction_target = None
 
     def time_elapsed_accounting_for_freeze(self, start, intro_motion_freeze=False):
-        return 999 if start < 0 else 999
+        return 999
 
     def find_element_ring_reaction_target(self, source_char):
         return self.reaction_target

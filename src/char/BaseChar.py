@@ -1,19 +1,16 @@
-import time  # noqa
-from enum import StrEnum  # noqa
-from typing import Any, Callable, Union, Optional, List  # noqa
+import time
+from enum import StrEnum
+from typing import TYPE_CHECKING, Callable
 
-import cv2  # noqa
-import numpy as np  # noqa
+from ok import Logger
 
-from ok import Config, Logger, Box  # noqa
-from src import text_white_color  # noqa
-from src.Labels import Labels
+from src import text_white_color
 from src.combat.planner import (
+    ActionExecutor,
     ActionIntent,
+    ActionPredicate,
     ActionSlot,
     ActionTag,
-    ActionExecutor,
-    ActionPredicate,
     CombatContext,
     EntryChainPolicy,
     FieldClaim,
@@ -22,9 +19,8 @@ from src.combat.planner import (
     RoleProfile,
     SwitchInGuard,
 )
+from src.Labels import Labels
 from src.utils import game_filters as gf
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from src.combat.BaseCombatTask import BaseCombatTask
