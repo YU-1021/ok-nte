@@ -75,6 +75,7 @@ class LauncherTask(BaseNTETask):
             self._wait_for_game_and_capture(time_out=120, settle_window=False)
             return
 
+        self.scene.set_logged_in(False)
         launcher_proc = self._find_process(LAUNCHER_EXE)
         self.log_info(f"Launcher process check: {self._format_process(launcher_proc)}")
         if launcher_proc:
