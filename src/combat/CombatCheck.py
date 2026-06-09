@@ -30,7 +30,7 @@ class CombatDetectPhase(Enum):
 class CombatDetectPolicy:
     miss_required: int = 2
     uncertain_seconds: float = 0.4
-    retarget_settle_seconds: float = 0.25
+    retarget_settle_seconds: float = 0.3
 
 
 @dataclass
@@ -133,7 +133,7 @@ class CombatCheck(BaseNTETask):
             while time.time() < deadline:
                 if self.is_in_team():
                     self.middle_click()
-                    self.sleep(0.25)
+                    self.sleep(0.3)
                     self.next_frame()
                     if self.combat_detect(lv=lv):
                         return True
