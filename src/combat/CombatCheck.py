@@ -380,7 +380,8 @@ class CombatCheck(BaseNTETask):
                     # 正菱形的宽高比应接近 1，面积填充率应接近 0.5
                     if 0.75 < aspect_ratio < 1.33 and 0.35 < extent < 0.65:
                         is_valid = True
-
+            if not is_valid:
+                self.log_info("find_target cause contour analysis failed")
             target = is_valid
 
         return target
