@@ -976,6 +976,7 @@ class AutoHeistTask(NTEOneTimeTask, BaseCombatTask):
             if direction is not None:
                 self.send_key_up(direction)
                 self.sleep(0.30)
+            ret = None
             if self.wait_until(
                 lambda: not self.is_in_team(),
                 pre_action=lambda: self.send_key("f", interval=2),
