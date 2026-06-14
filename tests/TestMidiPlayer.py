@@ -1,3 +1,4 @@
+import asyncio
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -317,6 +318,19 @@ class TestMidiPlaybackPreparation(unittest.IsolatedAsyncioTestCase):
             events.index(("play_end", "song-a")),
         )
 
+    async def test_stop_finishes_play_task_without_leaking_internal_cancel(self):
+        events = []
+        library = _FakePlaybackLibrary((_song_info("song-a", "Song A"),))
+        controller = _BlockingPlaybackController(library, events)
+
+        play_task = asyncio.create_task(controller.play("song-a", PlaybackOptions()))
+        await controller.started.wait()
+        await controller.stop()
+        await play_task
+
+        self.assertTrue(play_task.done())
+        self.assertEqual(events, [("prepare", "song-a"), ("play_start", "song-a"), ("idle", "idle")])
+
 
 class _FakePlaybackLibrary:
     def __init__(self, songs):
@@ -405,6 +419,21 @@ class _PlaylistChangingPlaybackController(_StoppingRandomPlaybackController):
             self._stopped.set()
             return
         await super()._play_prepared(prepared, options)
+
+
+class _BlockingPlaybackController(_RecordingPlaybackController):
+    def __init__(self, library, events):
+        super().__init__(library, events)
+        self.started = asyncio.Event()
+
+    async def _play_prepared(self, prepared, options):
+        self.events.append(("play_start", prepared.song_id))
+        self.started.set()
+        await asyncio.sleep(60)
+
+    def _status(self, options, status):
+        if status == "idle":
+            self.events.append(("idle", status))
 
 
 def _song_info(song_id, title):

@@ -73,6 +73,16 @@ MIDI_PLAYER_CONFIG_DEFAULTS = {
 }
 
 
+async def _cancel_task_and_wait(task):
+    task.cancel()
+    result = await asyncio.gather(task, return_exceptions=True)
+    exception = result[0]
+    if isinstance(exception, asyncio.CancelledError):
+        return
+    if isinstance(exception, BaseException):
+        raise exception
+
+
 class MidiPlayerSignals(QObject):
     analysis_done = Signal(str, object, object, float, object, object)
     analysis_failed = Signal(str, str)
@@ -590,7 +600,7 @@ class MidiPlayerTab(CustomTab):
 
     def load_pitch_demo_data(self):
         """Inject dummy data for interactive visual testing of the chart"""
-        dummy = {i: 0 for i in range(35, 91)}
+        dummy = dict.fromkeys(range(35, 91), 0)
         for note in [45, 48, 52, 55, 60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 85]:
             # Some dummy heights
             dummy[note] = 100 - abs(65 - note) * 2
@@ -1340,8 +1350,6 @@ class MidiPlayerTab(CustomTab):
                         scheduled_stop_delay,
                     )
                 )
-            except asyncio.CancelledError:
-                pass
             except Exception as e:
                 self.midi_signals.playback_status.emit(f"error:{e}")
             finally:
@@ -1373,11 +1381,7 @@ class MidiPlayerTab(CustomTab):
             await controller.play(song_id, options)
         finally:
             if stop_task is not None and not stop_task.done():
-                stop_task.cancel()
-                try:
-                    await stop_task
-                except asyncio.CancelledError:
-                    pass
+                await _cancel_task_and_wait(stop_task)
 
     def stop_playback(self):
         controller = self._play_controller
@@ -1616,8 +1620,6 @@ class MidiPlayerTab(CustomTab):
         self.current_key_mode = key
         if key == "36_keys":
             self.stacked_widget.setCurrentWidget(self.config_36)
-        elif key == "21_keys":
-            self.stacked_widget.setCurrentWidget(self.config_21)
 
         self.on_pitch_changed(self.spn_pitch.value())
 

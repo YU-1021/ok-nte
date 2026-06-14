@@ -10,6 +10,16 @@ from .models import PlaybackOptions, PlayMode
 from .preparation import PreparedMidiPlayback, prepare_midi_playback_async
 
 
+async def _cancel_and_wait(task: asyncio.Task) -> None:
+    task.cancel()
+    result = await asyncio.gather(task, return_exceptions=True)
+    exception = result[0]
+    if isinstance(exception, asyncio.CancelledError):
+        return
+    if isinstance(exception, BaseException):
+        raise exception
+
+
 class MidiPlaybackController:
     """Stable UI-facing playback controller."""
 
@@ -78,11 +88,7 @@ class MidiPlaybackController:
         self._pause.set()
         self._cancel_prefetch()
         if self._play_task is not None and not self._play_task.done():
-            self._play_task.cancel()
-            try:
-                await self._play_task
-            except asyncio.CancelledError:
-                pass
+            await _cancel_and_wait(self._play_task)
         self._play_task = None
 
     async def _play_sequence(self, song_id: str, options: PlaybackOptions) -> None:
@@ -135,14 +141,13 @@ class MidiPlaybackController:
                 prepared_task = self._prefetch_task
                 self._prefetch_song_id = None
                 self._prefetch_task = None
+        except asyncio.CancelledError:
+            if not self._stopped.is_set():
+                raise
         finally:
             if prepared_task is not None:
                 if not prepared_task.done():
-                    prepared_task.cancel()
-                    try:
-                        await prepared_task
-                    except asyncio.CancelledError:
-                        pass
+                    await _cancel_and_wait(prepared_task)
                 else:
                     try:
                         prepared_task.result()
@@ -202,9 +207,11 @@ class MidiPlaybackController:
 
     @staticmethod
     def _discard_prefetch_result(task: asyncio.Task[PreparedMidiPlayback]) -> None:
+        if task.cancelled():
+            return
         try:
             task.result()
-        except (asyncio.CancelledError, Exception):
+        except Exception:
             pass
 
     async def _play_prepared(
@@ -263,11 +270,7 @@ class MidiPlaybackController:
                 )
                 self._progress(options, playback_duration, playback_duration)
         finally:
-            progress_task.cancel()
-            try:
-                await progress_task
-            except asyncio.CancelledError:
-                pass
+            await _cancel_and_wait(progress_task)
 
     def _random_song_id(self, current_song_id: str) -> str | None:
         song_ids = self._sequence_song_ids()
