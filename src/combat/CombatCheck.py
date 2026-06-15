@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Optional
 
 import cv2
 import numpy as np
-from ok import Box, Logger, find_color_rectangles
+from ok import Box, Logger, TaskDisabledException, find_color_rectangles
 
 from src.Labels import Labels
 from src.tasks.BaseNTETask import BaseNTETask
@@ -194,6 +194,8 @@ class CombatCheck(BaseNTETask):
         self.in_sleep_check = True
         try:
             return self.do_check_in_combat(target)
+        except TaskDisabledException:
+            raise
         except Exception as e:
             logger.error("do_check_in_combat", e)
         finally:
