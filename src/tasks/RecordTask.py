@@ -4,12 +4,12 @@ from collections.abc import Callable, Iterable
 from typing import Any
 
 import win32gui
-from ok import Logger, og
-from ok.util.config import Config
 from pynput import mouse
 from PySide6.QtCore import Qt
 from qfluentwidgets import InfoBar, InfoBarPosition
 
+from ok import Logger, og
+from ok.util.config import Config
 from src.tasks.BaseNTETask import BaseNTETask
 from src.ui.util import show_dialog_and_wait
 
@@ -22,7 +22,9 @@ RECORD_OPERATIONS_KEY = "operations"
 SCROLL_MERGE_INTERVAL = 0.35
 NOTIFICATION = (
     "No recorded operations were found. Please wait for the recording prompt, "
-    "then follow the instructions carefully to record your actions."
+    "then follow the instructions carefully to record your actions.\n"
+    "DO NOT manually switch windows!\n"
+    "Wait patiently for the software to bring the game window to the foreground."
 )
 
 
