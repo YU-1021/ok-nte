@@ -28,7 +28,7 @@ class DynamicConfig(dict):
                 "exe": GAME_EXE,
                 "hwnd_class": "UnrealWindow",
                 "interaction": NTEInteraction,
-                "capture_method": og.device_manager.config.get("capture"),
+                "capture_method": og.device_manager.config.get("capture", "WGC"),
             },
         }
 
@@ -40,7 +40,7 @@ class DynamicConfig(dict):
                 "hwnd_class": "Qt51517QWindowOwnDC",
                 "top_hwnd_class": ["Qt51517QWindowToolSaveBitsOwnDC"],
                 "interaction": "PostMessage",
-                "capture_method": og.device_manager.config.get("capture"),
+                "capture_method": og.device_manager.config.get("capture", "WGC"),
             },
         }
 

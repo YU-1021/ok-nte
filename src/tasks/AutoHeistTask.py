@@ -1,9 +1,7 @@
 import re
 import time
 from dataclasses import dataclass
-from functools import cached_property
 from threading import Event
-from typing import ClassVar
 
 from qfluentwidgets import FluentIcon
 
@@ -147,7 +145,8 @@ class AutoHeistTask(NTEOneTimeTask, BaseCombatTask):
         self.name = "自动粉爪大劫案"
         self.icon = FluentIcon.SHOPPING_CART
         self.group_name = "都市闲趣"
-        self.instructions = INST if "zh" in self.get_app_locale() else EN_INST
+        _locale = self.get_app_locale()
+        self.instructions = INST if _locale and "zh" in _locale else EN_INST
         self.paths = {
             "路径1(路线参考自B站UP: 早柚大魔王丶)": HeistPathA,
             "路径2(在路径1基础上优化了大厅到办公层的路线)": HeistPathB,
@@ -520,7 +519,7 @@ class AutoHeistTask(NTEOneTimeTask, BaseCombatTask):
                 self.log_round_info("当前已在队伍界面且不在粉爪副本中，跳过退出副本")
                 return True
 
-            if self.wait_click_confirm(
+            if not self.wait_click_confirm(
                 lambda: self.send_key("esc", action_name="quit_heist", interval=2),
                 range=(0.6465, 0.6125, 0.7047, 0.7049),
                 time_out=60,
