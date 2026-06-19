@@ -999,3 +999,9 @@ msgstr ""
 "No recorded operations were found. Please wait for the recording prompt, then follow the instructions carefully to record your actions.\n"
 "DO NOT manually switch windows!\n"
 "Wait patiently for the software to bring the game window to the foreground."
+
+msgid "影院约会"
+msgstr "Cinema Date"
+
+msgid "约会目标"
+msgstr "Dating Target"

@@ -999,3 +999,9 @@ msgstr ""
 "No se encontraron operaciones grabadas. Espera a que aparezca el aviso de grabación y sigue las instrucciones con atención para grabar tus acciones.\n"
 "¡NO cambies de ventana manualmente!\n"
 "Espera pacientemente a que el software ponga la ventana del juego en primer plano."
+
+msgid "影院约会"
+msgstr "Cita en el cine"
+
+msgid "约会目标"
+msgstr "Objetivo de cita"
