@@ -285,8 +285,12 @@ class BaseNTETask(CharUIMixin, BaseTask):
 
     def get_current_char_index(self):
         return super().get_current_char_index()
-
+    
     def in_world(self) -> bool:
+        res = self.check_mini_map_arrow()
+        return len(res) == 1
+
+    def check_mini_map_arrow(self) -> list[dict]:
         frame = self.frame
         template_bgr = self.get_feature_by_name(Labels.mini_map_arrow).mat
         mat = self.box_of_screen(0.0691, 0.1083, 0.0949, 0.1493, name="in_world").crop_frame(frame)
@@ -296,9 +300,10 @@ class BaseNTETask(CharUIMixin, BaseTask):
             mat,
             threshold=0.75,
             cache_key=Labels.mini_map_arrow,
+            template_angle=15.5
         )
         # self.log_debug(f"in_world {res}, cost {cost} ms")
-        return len(res) == 1
+        return res
 
     def _find_rotated_template(
         self,
