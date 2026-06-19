@@ -68,7 +68,7 @@ def compile_i18n(i18n_dir):
             continue
         po_path = os.path.join(root, "ok.po")
         mo_path = os.path.join(root, "ok.mo")
-        po = polib.pofile(str(po_path))
+        po = polib.pofile(str(po_path), wrapwidth=0)
         po.save_as_mofile(mo_path)
         print(f"compiled {po_path} -> {mo_path}")
 
