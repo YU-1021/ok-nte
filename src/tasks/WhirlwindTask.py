@@ -1,3 +1,4 @@
+import time
 
 from qfluentwidgets import FluentIcon
 
@@ -75,14 +76,25 @@ class WhirlwindTask(NTEOneTimeTask, BaseCombatTask):
         self.sleep(1)
 
     def navigate(self):
+        self.wait_in_team()
+        failed_time = 0
         try:
             while True:
                 ret = self.check_mini_map_arrow()
                 if not ret:
-                    return False
+                    if failed_time == 0:
+                        failed_time = time.time()
+                else:
+                    failed_time = 0
 
                 angle = ret[0].get("angle")
                 if angle is None:
+                    if failed_time == 0:
+                        failed_time = time.time()
+                else:
+                    failed_time = 0
+
+                if failed_time != 0 and time.time() - failed_time > 4:
                     return False
 
                 error = self._normalize_angle(self.TARGET_NAVIGATION_ANGLE - angle)
@@ -103,7 +115,6 @@ class WhirlwindTask(NTEOneTimeTask, BaseCombatTask):
             self.sleep(0.2)
             return
         else:
-
             try:
                 self.send_key_down(side_key)
                 self.send_key("w")
