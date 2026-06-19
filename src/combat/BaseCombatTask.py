@@ -422,7 +422,6 @@ class BaseCombatTask(CombatCheck):
         self.wait_until(
             self.in_combat, time_out=wait_combat_time, raise_if_not_found=raise_if_not_found
         )
-        self.load_chars()
         self.switch_to_combat_start_char()
         self.info["Combat Count"] = self.info.get("Combat Count", 0) + 1
         with self.retarget_turn_policy(enable=True):
