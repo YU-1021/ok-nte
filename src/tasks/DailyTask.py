@@ -103,7 +103,6 @@ class DailyTask(NTEOneTimeTask, CinemaDateMixin, BaseNTETask):
                 self._task_enabled(self.CONF_CLAIM_MAIL, True),
                 self.claim_mail,
             ),
-            *self._coffee_task_entries(),
             (
                 self.CONF_COMPLETE_DAILY,
                 self._task_enabled(self.CONF_COMPLETE_DAILY, True),
@@ -124,6 +123,7 @@ class DailyTask(NTEOneTimeTask, CinemaDateMixin, BaseNTETask):
                 self._task_enabled(self.CONF_CINEMA_DATE, False),
                 lambda: self.run_cinema_date(self.config.get(self.CINEMA_DATE_TARGET, "")),
             ),
+            *self._coffee_task_entries(),
         ]
 
         self._reset_task_status(tasks)

@@ -47,13 +47,14 @@ class CinemaDateMixin(_TaskProxy):
         self.sleep(0.5)
         self.operate_click(0.90, 0.15)
         self.sleep(0.5)
-        self.operate(
-            lambda: self.scroll_relative(0.5, 0.5, -40),
-            block=True,
-        )
-        self.sleep(0.5)
+        for _ in range(5):
+            self.operate(
+                lambda: self.scroll_relative(0.5, 0.5, -40),
+                block=True,
+            )
+            self.sleep(0.3)
         self.operate_click(0.862, 0.780)
-        self.sleep(0.5)
+        self.sleep(1.5)
         self.click_traval_button()
         self.ensure_main(esc=False, time_out=60)
 
@@ -111,9 +112,9 @@ class CinemaDateMixin(_TaskProxy):
         return True
 
     def _select_date(self, target):
-        target_box = None
+        click_box = None
         if target == "":
-            target_box = self._top_selectable_target()
+            click_box = self._top_selectable_target()
         else:
             page = 2
             match = re.compile(target, re.IGNORECASE)
@@ -123,23 +124,26 @@ class CinemaDateMixin(_TaskProxy):
                 if target_boxes:
                     loc_y = target_boxes[0].y + target_boxes[0].height
                     boxes = self._find_selectable_target()
-                    for box in boxes:
-                        if loc_y > box.y and loc_y < box.y + box.height:
-                            target_box = target_boxes[0]
+                    if boxes:
+                        # 精确匹配：loc_y 落在色块 Y 范围内
+                        valid = [b for b in boxes if b.y < loc_y < b.y + b.height]
+                        if not valid:
+                            # 降级：找 Y 中心距离最近的色块
+                            valid = sorted(boxes, key=lambda b: abs(loc_y - (b.y + b.height / 2)))
+                        if valid:
+                            click_box = valid[0]
                             break
-                    if target_box:
-                        break
                 self.scroll_relative(0.8391, 0.5333, -40)
                 self.sleep(0.5)
             else:
                 self.log_info(f"未找到 {target} 使用顶部可选目标")
-                target_box = self._top_selectable_target()
+                click_box = self._top_selectable_target()
 
-        if not target_box:
+        if not click_box:
             return False
 
         return self.wait_click_confirm(
-            action=lambda: self.operate_click(target_box, interval=1),
+            action=lambda: self.operate_click(click_box, interval=1),
             range=(0.650, 0.608, 0.705, 0.707),
         )
 
