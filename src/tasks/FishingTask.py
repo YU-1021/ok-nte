@@ -254,7 +254,7 @@ class FishingTask(NTEOneTimeTask, BaseNTETask):
 
     def run_restock_state_machine(self):
         state_order = [RestockState.SELL_FISH, RestockState.BUY_BAIT]
-        retry_by_state = {state: 0 for state in state_order}
+        retry_by_state = dict.fromkeys(state_order, 0)
         state_index = 0
 
         while state_index < len(state_order):

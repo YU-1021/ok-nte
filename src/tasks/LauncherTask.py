@@ -398,6 +398,7 @@ class LauncherTask(BaseNTETask):
             return 0
 
         matches = []
+        visible_match = []
 
         def callback(hwnd, _):
             if not win32gui.IsWindow(hwnd) or not win32gui.IsWindowEnabled(hwnd):
@@ -414,14 +415,18 @@ class LauncherTask(BaseNTETask):
                 return True
 
             matches.append(hwnd)
+            if win32gui.IsWindowVisible(hwnd):
+                visible_match.append(hwnd)
+                return False
             return True
 
         win32gui.EnumWindows(callback, None)
+        if visible_match:
+            return visible_match[0]
         if not matches:
             return 0
 
-        visible = [hwnd for hwnd in matches if win32gui.IsWindowVisible(hwnd)]
-        return visible[0] if visible else matches[0]
+        return matches[0]
 
     def _get_window_size(self, hwnd):
         try:

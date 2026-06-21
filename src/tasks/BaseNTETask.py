@@ -187,17 +187,22 @@ class BaseNTETask(CharUIMixin, MovementMixin, VisionMixin, BaseTask):
     def _get_interval_func_key(self, func: Callable):
         bound_func = getattr(func, "__func__", None)
         if bound_func is not None:
-            return ("func_interval", id(getattr(func, "__self__", None)), bound_func)
+            return (
+                "func_interval",
+                "bound_method",
+                id(getattr(func, "__self__", None)),
+                bound_func,
+            )
 
         code = getattr(func, "__code__", None)
         if code is not None:
-            return ("func_interval", code)
+            return ("func_interval", "code", code, None)
 
         try:
             hash(func)
         except TypeError:
-            return ("func_interval", id(func))
-        return ("func_interval", func)
+            return ("func_interval", "id", id(func), None)
+        return ("func_interval", "callable", func, None)
 
     def run_with_interval(
         self,
