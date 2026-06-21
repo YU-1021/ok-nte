@@ -57,12 +57,8 @@ class TestDailyCoffeeLocaleGate(unittest.TestCase):
     def _patch_locale(self, name=None, *, raise_exc=False, missing_app=False, missing_locale=False):
         from unittest.mock import MagicMock
 
-        from ok import og
-
-        original_app = getattr(og, "app", None)
         if missing_app:
-            og.app = None
-            return original_app
+            return self._replace_app(None)
 
         app = MagicMock()
         if missing_locale:
@@ -72,6 +68,12 @@ class TestDailyCoffeeLocaleGate(unittest.TestCase):
                 app.locale.name.side_effect = RuntimeError("locale unavailable")
             else:
                 app.locale.name.return_value = name
+        return self._replace_app(app)
+
+    def _replace_app(self, app):
+        from ok import og
+
+        original_app = getattr(og, "app", None)
         og.app = app
         return original_app
 
